@@ -1,0 +1,138 @@
+#include <iostream>
+using namespace std;
+
+const int MAX = 100;
+
+struct Tiket {
+    string nama;
+    string rute;
+};
+
+
+Tiket queue[MAX];
+int front = -1, rear = -1;
+
+
+Tiket stackArr[MAX];
+int top = -1;
+
+
+void enqueue(Tiket *q) {
+    if(rear == MAX-1) {
+        cout << "Queue Overflow!\n";
+        return;
+    }
+
+    if(front == -1) front = 0;
+
+    rear++;
+    cout << "Nama penumpang: "; cin >> (q+rear)->nama;
+    cout << "Rute: "; cin >> (q+rear)->rute;
+
+    cout << "Masuk antrian!\n";
+}
+
+
+void dequeue(Tiket *q) {
+    if(front == -1 || front > rear) {
+        cout << "Queue Underflow!\n";
+        return;
+    }
+
+    cout << "Diproses: " << (q+front)->nama 
+         << " | Rute: " << (q+front)->rute << endl;
+
+
+    if(top == MAX-1) {
+        cout << "Stack Overflow!\n";
+    } else {
+        top++;
+        *(stackArr+top) = *(q+front);
+    }
+
+    front++;
+}
+
+void push(Tiket *s, Tiket data) {
+    if(top == MAX-1) {
+        cout << "Stack Overflow!\n";
+        return;
+    }
+    top++;
+    *(s+top) = data;
+}
+
+
+void pop(Tiket *s) {
+    if(top == -1) {
+        cout << "Stack Underflow!\n";
+        return;
+    }
+    cout << "Dihapus: " << (s+top)->nama << endl;
+    top--;
+}
+
+
+void peek() {
+    if(front != -1 && front <= rear)
+        cout << "Depan Antrian: " << queue[front].nama << endl;
+
+    if(top != -1)
+        cout << "Transaksi Terakhir: " << stackArr[top].nama << endl;
+}
+
+
+void tampilQueue(Tiket *q) {
+    if(front == -1 || front > rear) {
+        cout << "Antrian kosong!\n";
+        return;
+    }
+
+    cout << "\n=== ANTRIAN ===\n";
+    for(int i = front; i <= rear; i++) {
+        cout << (q+i)->nama << " | " << (q+i)->rute << endl;
+    }
+}
+
+
+void tampilStack(Tiket *s) {
+    if(top == -1) {
+        cout << "Riwayat kosong!\n";
+        return;
+    }
+
+    cout << "\n=== RIWAYAT ===\n";
+    for(int i = top; i >= 0; i--) {
+        cout << (s+i)->nama << " | " << (s+i)->rute << endl;
+    }
+}
+
+
+int main() {
+    int pilih;
+
+    do {
+        cout << "\n=== MENU POSTTEST 3 ===\n";
+        cout << "1. Enqueue (Antrian)\n";
+        cout << "2. Dequeue (Proses)\n";
+        cout << "3. Pop Riwayat\n";
+        cout << "4. Peek\n";
+        cout << "5. Tampil Antrian\n";
+        cout << "6. Tampil Riwayat\n";
+        cout << "0. Keluar\n";
+        cout << "Pilih: ";
+        cin >> pilih;
+
+        switch(pilih) {
+            case 1: enqueue(queue); break;
+            case 2: dequeue(queue); break;
+            case 3: pop(stackArr); break;
+            case 4: peek(); break;
+            case 5: tampilQueue(queue); break;
+            case 6: tampilStack(stackArr); break;
+        }
+
+    } while(pilih != 0);
+
+    return 0;
+}
